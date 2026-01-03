@@ -46,7 +46,7 @@ jobs:
       
     - name: Verify deployment information
       run: |
-        echo "Deploying to ${{ github.github.ref_name }} environment"
+        echo "Deploying to ${{ github.ref_name }} environment"
         echo "Project ID: ${{ vars.PROJECT_ID }}"
         echo "Registry: ${{ vars.CONT_REGISTRY_NAME }}"
         echo "Repository: ${{ vars.CONT_REPOSITORY_NAME }}"
