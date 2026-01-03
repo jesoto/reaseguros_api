@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libzbar0 \
     python3-dev \
+    libcairo2-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
