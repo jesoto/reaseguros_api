@@ -15,11 +15,11 @@ steps:
       echo "✅ .env file was found"
 
       if [ ! -f llm.json ]; then
-          echo "❌ ERROR: The llm.json file does not exist"
+          echo "❌ ERROR: El archivo llm.json doesnt exist"
           exit 1
         fi
         
-        echo "✅ llm.json file was found"
+        echo "✅ Archivo llm.json was found"
       
       echo "**** Reading .env file ****"
       echo "Size: $(wc -l < .env) lines"
