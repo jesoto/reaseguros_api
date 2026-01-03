@@ -1,0 +1,135 @@
+name: 1. Deploy Django GenAi Reaseguros-bot API
+
+on:
+
+  push:
+    branches:
+      - develop
+      - release
+      - master
+
+jobs:
+  set-env:
+    runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.mapper.outputs.env_name }}
+    steps:
+      - id: mapper
+        run: |
+          case "${{ github.ref_name }}" in
+            develop)
+              echo "env_name=dev" >> $GITHUB_OUTPUT
+              ;;
+            release)
+              echo "env_name=test" >> $GITHUB_OUTPUT
+              ;;
+            master)
+              echo "env_name=prod" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "env_name=unknown" >> $GITHUB_OUTPUT
+              exit 1
+              ;;
+          esac
+
+  deploy:
+    needs: set-env
+    name:  Deploy to ${{ github.ref_name }} environment
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: ${{ needs.set-env.outputs.env_name }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Verify deployment information
+      run: |
+        echo "Deploying to ${{ github.github.ref_name }} environment"
+        echo "Project ID: ${{ vars.PROJECT_ID }}"
+        echo "Registry: ${{ vars.CONT_REGISTRY_NAME }}"
+        echo "Repository: ${{ vars.CONT_REPOSITORY_NAME }}"
+        echo "Image name: ${{ vars.CONT_IMAGE_NAME }}"
+        echo "Region: ${{ vars.REGION }}"
+    
+    - name: Google Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+    
+    - name: Set up Cloud SDK
+      uses: 'google-github-actions/setup-gcloud@v1'
+    
+    - name: Access Secret from Secret Manager to get env variables
+      run: |
+        # Obtener el secreto de Secret Manager
+        SECRET_VALUE=$(gcloud secrets versions access \
+          ${{ vars.GCP_SECRET }})
+        
+        # Crear archivo .env
+        echo "$SECRET_VALUE" > env_var.json
+    
+    - name: Convert JSON to .env with Python
+      run: |
+        python -c "
+        import json
+        
+        with open('env_var.json') as f:
+            data = json.load(f)
+        
+        with open('.env', 'w') as f:
+            for k, v in data.items():
+                f.write(f'{k}={str(v)}\n')
+        "
+        
+        # Validando contenido
+        head -n 3 .env
+    
+    - name: Create secure credentials file for Cloud Build
+      run: |
+        # Create tmp file
+        echo '${{ secrets.GCP_SA_KEY }}' > llm.json
+        
+        echo "Credentiales:"
+        ls -la llm.json
+        echo "First lines:"
+        head -c 50 llm.json && echo ""
+
+    - name: Prepate cloud build context
+      run: |
+        # Crear directorio temporal
+        mkdir -p cloudbuild_context
+                
+        rsync -av --exclude-from=.dockerignore . cloudbuild_context/
+        cp -f .env cloudbuild_context/
+        cp -f llm.json cloudbuild_context/
+
+        ls -la cloudbuild_context
+
+    - name: Trigger Cloud Build
+      run: |
+
+        tar -czf context.tar.gz -C cloudbuild_context .
+        gcloud builds submit context.tar.gz --project=${{ vars.PROJECT_ID }} \
+          --substitutions=_CONT_REGISTRY_NAME=${{ vars.CONT_REGISTRY_NAME }},_PROJECT_ID=${{ vars.PROJECT_ID }},_CONT_REPOSITORY_NAME=${{ vars.CONT_REPOSITORY_NAME }},_CONT_IMAGE_NAME=${{ vars.CONT_IMAGE_NAME }},_SERVICE_ACCOUNT=${{ vars.SERVICE_ACCOUNT }},_REGION=${{ vars.REGION }},_VPC_CONNECTOR=${{ vars.VPC_CONNECTOR }} \
+          --config=cloudbuild.yaml
+          
+    - name: Create Migration Job
+      run: |
+        JOB_ID=$(date +%s)
+
+        gcloud run jobs create django-migrate-job-$JOB_ID \
+          --image=${{ vars.CONT_REGISTRY_NAME }}/${{ vars.PROJECT_ID }}/${{ vars.CONT_REPOSITORY_NAME }}/${{ vars.CONT_IMAGE_NAME }}:latest \
+          --tasks=1 \
+          --vpc-connector=${{ vars.VPC_CONNECTOR }} \
+          --service-account=${{ vars.SERVICE_ACCOUNT }} \
+          --region=${{ vars.REGION }} \
+          --project=${{ vars.PROJECT_ID }} \
+          --command="python" \
+          --args="manage.py","migrate","--noinput"
+        
+        gcloud run jobs execute django-migrate-job-$JOB_ID \
+          --region=${{ vars.REGION }} \
+          --project=${{ vars.PROJECT_ID }} \
+          --wait

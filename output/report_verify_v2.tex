@@ -1,0 +1,207 @@
+¡Saludos, estimado equipo de RIMAC SEGUROS!
+
+A continuación, presento el informe de revisión automatizada de consistencia legal y técnica solicitado para la pre-póliza o póliza de Rutas de Lima S.A.C. y sus respectivos contratos de reaseguro. El objetivo principal de este análisis es identificar discrepancias críticas, inconsistencias legales y riesgos no cubiertos, conforme a la Ley N° 26702 y las normas de la SBS.
+
+\documentclass[11pt, a4paper]{article}
+
+%===============================================================================
+% PREÁMBULO Y PAQUETES
+%===============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{framed}
+\usepackage{pifont} % Para íconos
+\usepackage{array}  % Para \newcolumntype
+\usepackage{hyperref}
+
+%===============================================================================
+% DEFINICIÓN DE COLORES Y ESTILOS
+%===============================================================================
+\definecolor{rimacblue}{RGB}{0, 65, 130}
+\definecolor{alertred}{RGB}{217, 30, 24}
+\definecolor{warningorange}{RGB}{243, 156, 18}
+\definecolor{okgreen}{RGB}{39, 174, 96}
+\definecolor{lightgray}{gray}{0.95}
+
+% --- Formato de Secciones ---
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{rimacblue}}
+  {}
+  {0em}
+  {}[\hrule]
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+
+% --- Comandos personalizados para íconos y estados ---
+\newcommand{\criticorisk}{\colorbox{alertred}{\textcolor{white}{\textbf{\small \ding{110} CRÍTICO}}}}
+\newcommand{\altorisk}{\colorbox{warningorange}{\textcolor{black}{\textbf{\small \ding{55} ALTO}}}} % Adjusted color for text
+\newcommand{\mediorisk}{\colorbox{yellow!80!black}{\textcolor{black}{\textbf{\small \ding{73} MEDIO}}}}
+\newcommand{\bajorisk}{\colorbox{okgreen}{\textcolor{white}{\textbf{\small \ding{51} BAJO}}}}
+\newcommand{\ok}{\textcolor{okgreen}{\ding{51}}}
+\newcommand{\bad}{\textcolor{alertred}{\ding{55}}}
+\newcommand{\warn}{\textcolor{warningorange}{\textbf{!}}}
+
+% --- Configuración de Hipervínculos ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=rimacblue,
+    urlcolor=rimacblue,
+}
+
+% --- Definición de tipo de columna para tablas ---
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+%===============================================================================
+% TÍTULO DEL DOCUMENTO
+%===============================================================================
+\title{
+    \vspace{-2cm}
+    \begin{flushleft}
+    \fontsize{22}{26}\bfseries\color{rimacblue}
+    Informe Legal de Análisis de Contratos
+    \end{flushleft}
+}
+\author{Asesoría Legal Experta en Reaseguros \\ Para: \textbf{RIMAC SEGUROS}}
+\date{\today}
+
+%===============================================================================
+% INICIO DEL DOCUMENTO
+%===============================================================================
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+Estimados señores de RIMAC SEGUROS,
+
+A continuación, presento el informe de revisión de consistencia legal y técnica solicitado.
+
+\vspace{1cm}
+
+\noindent\textbf{Asegurado:} Rutas de Lima S.A.C. \\
+\textbf{Ramo:} Todo Riesgo de Daño Material y Lucro Cesante (Property All Risks \& Business Interruption)
+
+\vspace{0.5cm}
+
+%===============================================================================
+% DICTAMEN LEGAL
+%===============================================================================
+\section*{⛔ Dictamen Legal: Alerta Crítica de Cobertura y Desalineación Contractual}
+
+El análisis comparativo entre la Póliza emitida por RIMAC y los contratos de reaseguro facultativo presentados (R1 - Brit, Talbot, Liberty; R2 - Marlin; R3 - Chaucer RRPP) revela \textbf{\textcolor{alertred}{discrepancias críticas y riesgos no cubiertos}} que exponen a RIMAC SEGUROS a una contingencia financiera y legal significativa.
+
+Los hallazgos más graves son:
+\begin{enumerate}[label=\arabic*., leftmargin=*, itemsep=2mm]
+    \item \textbf{Inconsistencia Crítica en la Cobertura de SRCC:} La póliza de RIMAC otorga una cobertura de "Todo Riesgo de Pérdida Física o Daño", incluyendo Disturbios, Huelgas y Conmoción Civil (SRCC) con un sublímite de USD 25M. Sin embargo, los slips de reaseguro R1 (Brit, Talbot, Liberty) y R2 (Marlin) \textbf{\textcolor{alertred}{excluyen explícitamente SRCC}} en sus subjetividades o condiciones específicas. Aunque el slip R3 (Chaucer) está destinado a cubrir SRCC por USD 25M, esta fragmentación y exclusión por parte de los reaseguradores de "Todo Riesgo" crea una brecha sustancial en la protección para un riesgo clave que RIMAC ha asumido.
+    
+    \item \textbf{Deficiencia Sustancial en la Suma Asegurada Reasegurada:} La póliza emitida por RIMAC tiene una suma asegurada de \textbf{USD 230,000,000}. La suma total reasegurada por los tres slips analizados asciende a solo \textbf{USD 45,000,000} (USD 10M de R1 + USD 10M de R2 + USD 25M de R3). Esto deja una \textbf{\textcolor{alertred}{exposición no respaldada por reaseguro de USD 185,000,000}}, lo que representa un riesgo inaceptable y una retención excesiva para RIMAC.
+
+    \item \textbf{Omisión de Garantías y Subjetividades Críticas de Póliza:} La póliza impone al asegurado una extensa lista de "Subjetividades" (actuando como condiciones previas o recomendaciones vinculantes, como restricciones de peso o planes de recuperación de puentes) para la aceptación del riesgo. \textbf{\textcolor{alertred}{Ninguno de los contratos de reaseguro replica esta lista exhaustiva}}. Esto significa que si el asegurado incumple estas condiciones, RIMAC podría tener que pagar un siniestro sin la posibilidad de recobro de sus reaseguradores, al no estar estos vinculados por dichas garantías no transferidas.
+
+    \item \textbf{Desalineación General en Condiciones Especiales y Exclusiones:} Más allá de SRCC, existen inconsistencias en la aplicación y listado de cláusulas NMA/LMA. Específicamente, R2 (Marlin) añade exclusiones significativas como 'Transmission and Distribution Lines Exclusion Clause', 'Terrorism Exclusion - NMA 2920', 'Testing and Commissioning Exclusion Clause', y 'Communicable Disease Exclusion - LMA 5394', que \textbf{\textcolor{alertred}{no están presentes en la póliza y alteran la cobertura original}}. Asimismo, se observan omisiones de cláusulas importantes de la póliza (ej. Cláusula 13 sobre incumplimiento de primas).
+
+    \item \textbf{Inconsistencia Financiera en Primas y Términos de Pago:} Se detecta una \textbf{\textcolor{alertred}{discrepancia crítica}} entre la prima neta de la póliza (USD 2,270,924.01 para el 100\%) y las primas detalladas en los slips de reaseguro (USD 1,071,678 para R1/R2 y USD 144,670.66 para R3, ambos "for 100\%" de su respectiva capa). Además, los términos de pago difieren significativamente entre los slips y la póliza. Esto sugiere una falta de alineación fundamental en la valoración del riesgo y las expectativas financieras.
+\end{enumerate}
+
+Debido a estas inconsistencias, el programa de reaseguro no opera "back-to-back" con la póliza emitida, violando principios fundamentales de gestión de riesgos y pudiendo acarrear consecuencias regulatorias ante la SBS.
+
+\newpage
+
+%===============================================================================
+% DASHBOARD DE RESULTADO
+%===============================================================================
+\section*{A. Dashboard de Resultado: Análisis Comparativo}
+
+\begin{longtable}{| L{0.18\textwidth} | L{0.2\textwidth} | L{0.15\textwidth} | L{0.35\textwidth} |}
+\hline
+\rowcolor{rimacblue}
+\textcolor{white}{\textbf{Área de Análisis}} & \textcolor{white}{\textbf{Hallazgo Principal}} & \textcolor{white}{\textbf{Nivel de Riesgo}} & \textcolor{white}{\textbf{Detalle Comparativo y Consecuencias}} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{rimacblue}
+\textcolor{white}{\textbf{Área de Análisis}} & \textcolor{white}{\textbf{Hallazgo Principal}} & \textcolor{white}{\textbf{Nivel de Riesgo}} & \textcolor{white}{\textbf{Detalle Comparativo y Consecuencias}} \\
+\hline
+\endhead
+\hline
+\multicolumn{4}{r}{{Continúa en la siguiente página...}} \\
+\endfoot
+\hline
+\endlastfoot
+
+% --- Filas de la tabla ---
+\textbf{1. Cobertura General y SRCC} & Inconsistencia crítica en la cobertura de SRCC entre slips "All Risk" y la póliza. & \criticorisk & \textbf{Póliza:} "All Risk of Physical Loss or Damage" incluyendo SRCC. \newline \textbf{R1 (Brit, Talbot, Liberty):} Declara "All Risk" pero \bad{} EXCLUYE SRCC. \newline \textbf{R2 (Marlin):} Declara "All Risk" pero \bad{} EXCLUYE SRCC. \newline \textbf{R3 (Chaucer RRPP):} Específicamente cubre SRCC \ok{}. \newline \textbf{Consecuencia:} RIMAC asume riesgo SRCC que no está respaldado en sus capas principales de "Todo Riesgo". \\
+\hline
+\rowcolor{lightgray}
+\textbf{2. Suma Asegurada Total} & Brecha masiva de respaldo de reaseguro. & \criticorisk & \textbf{Póliza:} Límite de USD 230,000,000. \newline \textbf{Reaseguro Documentado:} \bad{} Suma USD 45,000,000 (R1: 10M, R2: 10M, R3: 25M). \newline \textbf{Consecuencia:} Existe un déficit de \textbf{USD 185,000,000} que no está respaldado por estos contratos, exponiendo a RIMAC a una retención excesiva. \\
+\hline
+\textbf{3. Garantías y Subjetividades} & Omisión de garantías y condiciones previas (subjetividades) de la póliza en los slips. & \criticorisk & \textbf{Póliza:} Contiene una extensa lista de subjetividades (ej. restricciones de peso, planes de recuperación de puentes). \newline \textbf{Reaseguradores (R1, R2, R3):} \bad{} Ningún slip reproduce estas condiciones. \newline \textbf{Consecuencia:} Los reaseguradores no están vinculados por condiciones clave, pudiendo rechazar reclamos si el asegurado las incumple. \\
+\hline
+\rowcolor{lightgray}
+\textbf{4. Exclusiones Específicas} & Listas de exclusiones desalineadas y contradicciones directas en SRCC. & \criticorisk & \textbf{Póliza:} Lista de exclusiones detallada. \newline \textbf{R1/R2:} \bad{} Excluyen SRCC. \newline \textbf{R2 (Marlin):} \bad{} Añade 'Transmission and Distribution Lines Exclusion', 'Terrorism Exclusion - NMA 2920', 'Testing and Commissioning Exclusion', 'Communicable Disease Exclusion - LMA 5394'. \newline \textbf{Todos los Slips:} \warn{} Omiten otras exclusiones de la póliza (ej. obras no terminadas, E\&O). \newline \textbf{Consecuencia:} Riesgos cubiertos por RIMAC (SRCC, terrorismo) no tienen respaldo, y se introducen nuevas limitaciones no esperadas en la póliza. \\
+\hline
+\textbf{5. Condiciones Especiales y NMA/LMA} & Falta de armonización en las condiciones especiales y cláusulas NMA/LMA. & \altorisk & \textbf{Póliza:} Listado extenso de NMA/LMA y cláusula 13 (comunicación incumplimientos prima). \newline \textbf{R1 (Brit):} \bad{} Modifica Lenders Endorsement y elimina sección de cancelación por no pago. \newline \textbf{R2 (Marlin):} \bad{} Añade exclusiones significativas (Terrorism NMA 2920, Communicable Disease LMA 5394). \newline \textbf{R3 (Chaucer):} \warn{} Omite algunas cláusulas NMA/LMA de la póliza y Cláusula 13. \newline \textbf{Consecuencia:} Ambigüedad sobre las condiciones aplicables, aumentando el riesgo de disputas y fallos de recobro. \\
+\hline
+\rowcolor{lightgray}
+\textbf{6. Prima Neta y Términos de Pago} & Discrepancia crítica en la prima neta y los términos de pago. & \criticorisk & \textbf{Póliza:} Period Premium (For 100\%) USD 2,270,924.01. \newline \textbf{R1/R2:} \bad{} Period Premium (For 100\% de su capa) USD 1,071,678. \newline \textbf{R3:} \bad{} Period Premium (For 100\% de su capa) USD 144,670.66. \newline \textbf{Términos de Pago:} \bad{} Difieren entre póliza y slips, y entre los slips mismos. \newline \textbf{Consecuencia:} Desalineación financiera, posible subvaloración del reaseguro o falta de cobertura si las primas no se corresponden con el riesgo total. \\
+\hline
+\textbf{7. Deducibles y Sublímites} & Omisión de deducibles en R3, y anulación de sub-límites clave por exclusiones en R1/R2. & \altorisk & \textbf{Póliza:} Detalla deducibles (EQ/Tsunami, Tormenta, etc.) y sub-límites (incluyendo SRCC USD 25M). \newline \textbf{R1/R2:} \ok{} Listan deducibles/sub-límites pero \bad{} anulan SRCC por exclusión. \newline \textbf{R3 (Chaucer):} \warn{} Omite deducibles específicos para Terremoto/Tsunami y Tormenta/Inundación. \newline \textbf{Consecuencia:} Disputas en la liquidación de siniestros por SRCC y otros perils, y posibles exposiciones no anticipadas. \\
+\hline
+\rowcolor{lightgray}
+\textbf{8. Puntos Consistentes} & Coincidencia en datos generales y legales fundamentales. & \bajorisk & \textbf{Póliza y Reaseguradores:} \ok{} Asegurados, Moneda (USD), Vigencia, Actividad, Materia Asegurada, Límites Territoriales y Ley Aplicable (Perú, Arbitraje ICC Lima) son consistentes en todos los documentos. La Cláusula de Cooperación de Reclamos también está alineada en la práctica. \newline \textbf{Consecuencia:} Estos elementos están correctamente alineados, pero no mitigan los riesgos críticos identificados en otras áreas. \\
+\end{longtable}
+
+%===============================================================================
+% CONFORMIDAD LEGAL
+%===============================================================================
+\section*{B. Conformidad Legal (Ley N° 26702 y Normas SBS)}
+
+El estado actual de los contratos presenta serias observaciones desde la perspectiva regulatoria peruana, en contravención con la Ley N° 26702 (Ley General del Sistema Financiero y del Sistema de Seguros y Orgánica de la Superintendencia de Banca y Seguros) y las normas de la SBS:
+\begin{enumerate}[label=\arabic*., leftmargin=*, wide, labelwidth=!, labelindent=0pt, itemsep=2mm]
+    \item \textbf{Requisitos de Información y Transparencia (Art. 326° y sig. LGSF):} Las discrepancias fundamentales en cobertura (ej. SRCC excluido en capas "Todo Riesgo"), límites (brecha de USD 185M), condiciones (subjetividades no replicadas) y exclusiones (adicción de nuevas en slips) contravienen el principio de claridad y certeza que debe regir los contratos de seguros y reaseguros. Esta falta de alineación podría ser observada por la SBS como una deficiencia en la transparencia y en la gestión contractual y de riesgos.
+
+    \item \textbf{Requisitos de Reserva Técnica y Solvencia (Art. 195°, 200° LGSF y normas relacionadas):} Este es el punto más crítico. La Ley N° 26702 y las normas de la SBS exigen que las aseguradoras mantengan reservas técnicas adecuadas para respaldar sus obligaciones. Para que un contrato de reaseguro permita a la cedente (RIMAC) reducir sus reservas y optimizar su margen de solvencia, el riesgo debe estar efectiva y congruentemente transferido.
+    \begin{itemize}
+        \item Debido a la \textbf{inconsistencia de cobertura} (riesgos cubiertos por póliza pero excluidos por reaseguradores clave) y la \textbf{brecha masiva en la suma asegurada}, la SBS podría determinar que el riesgo \textbf{no ha sido transferido adecuadamente} en su totalidad.
+        \item \textbf{Consecuencia Directa:} RIMAC podría estar obligada a \textbf{constituir y mantener reservas técnicas adicionales} por el monto no reasegurado o mal reasegurado, afectando directamente su margen de solvencia y su posición financiera.
+    \end{itemize}
+
+    \item \textbf{Conformidad con Normas de la SBS (Circular G-151-2010 y subsiguientes):} La falta de consistencia ("back-to-back") entre la póliza y su reaseguro evidencia una debilidad en los controles internos de suscripción y colocación de reaseguros, un aspecto fundamental de la gestión de riesgos que es supervisado activamente por la SBS para garantizar la solidez y estabilidad del sistema de seguros.
+
+    \item \textbf{Cláusulas Prohibidas o Restringidas (Art. 326° y sig. LGSF):} Si bien no hay cláusulas explícitamente prohibidas, la introducción de exclusiones en los slips (ej. NMA 2920 para terrorismo, LMA 5394 para enfermedades) que no se reflejan en la póliza o que contradicen coberturas otorgadas por RIMAC, podría considerarse una limitación indebida de la cobertura del asegurado si RIMAC no puede recobrar, y consecuentemente, un riesgo para la compañía frente a sus obligaciones.
+\end{enumerate}
+
+Este análisis legal adicional fortalece la revisión y proporciona una mayor seguridad jurídica a RIMAC SEGUROS.
+
+%===============================================================================
+% RECOMENDACIONES
+%===============================================================================
+\section*{C. Recomendaciones y Pasos a Seguir}
+
+Se recomienda tomar las siguientes acciones de manera inmediata para mitigar los riesgos identificados:
+\begin{enumerate}[label=\arabic*., leftmargin=*, wide, labelwidth=!, labelindent=0pt, itemsep=2mm]
+    \item \textbf{Acción Inmediata - No Considerar el Riesgo Completamente Colocado:} Ante la brecha sustancial en la suma asegurada y las inconsistencias de cobertura (especialmente SRCC), no se debe considerar este riesgo como completamente colocado y respaldado. Es imperativo contactar al corredor de reaseguros de forma urgente para notificar estas discrepancias críticas.
+
+    \item \textbf{Rectificación de Contratos y Alineación "Back-to-Back":}
+    \begin{itemize}
+        \item \textbf{Cobertura de SRCC:} Exigir la enmienda inmediata de los slips R1 (Brit, Talbot, Liberty) y R2 (Marlin) para eliminar las exclusiones de SRCC, asegurando que la cobertura de "Todo Riesgo" sea consistente con la póliza. De no ser posible, buscar capacidad de reaseguro alternativa para cubrir esta brecha crítica.
+        \item \textbf{Garantías y Subjetividades:} Solicitar la inclusión explícita en todos los slips de reaseguro de todas las garantías, condiciones y subjetividades impuestas al asegurado en la póliza original.
+        \item \textbf{Condiciones y Exclusiones:} Armonizar el listado y contenido de todas las cláusulas NMA/LMA, condiciones especiales y exclusiones en todos los slips para que sean idénticas a la póliza original. Eliminar cualquier exclusión adicional en los slips que no esté en la póliza.
+    \end{itemize}
+
+    \item \textbf{Aclaración y Respaldo de la Suma Asegurada Total:} Urgir al corredor de reaseguros a presentar la estructura completa del programa que respalda los \textbf{USD 230,000,000} de la póliza. Los documentos actuales solo justifican \textbf{USD 45,000,000}. Se debe obtener la documentación de todas las capas o participantes restantes para asegurar un respaldo total y adecuado.
+
+    \item \textbf{Alineación Financiera:} Aclarar la discrepancia en las primas y los términos de pago con el corredor de reaseguros y los reaseguradores para asegurar que el costo del reaseguro sea consistente con la prima de la póliza directa y los riesgos asumidos por cada capa.
+
+    \item \textbf{Comunicación y Seguimiento Regulatorio:} Mantener a la SBS informada de estas acciones correctivas, si fuera necesario, para demostrar la diligencia de RIMAC en la gestión de sus riesgos y el cumplimiento regulatorio.
+\end{enumerate}
+
+\vspace{1cm}
+Este análisis concluye que, en su estado actual, los contratos de reaseguro no proveen el respaldo adecuado y congruente para la póliza emitida, exponiendo a RIMAC a riesgos financieros, operativos y reputacionales inaceptables. La acción correctiva urgente es indispensable.
+
+\end{document}

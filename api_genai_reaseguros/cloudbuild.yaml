@@ -1,0 +1,88 @@
+steps:
+- name: 'ubuntu'
+  id: 'validate-env'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      echo "Finding .en file..."
+      
+      if [ ! -f .env ]; then
+        echo "❌ ERROR: The .env file does not exist"
+        exit 1
+      fi
+      
+      echo "✅ .env file was found"
+
+      if [ ! -f llm.json ]; then
+          echo "❌ ERROR: El archivo llm.json doesnt exist"
+          exit 1
+        fi
+        
+        echo "✅ Archivo llm.json was found"
+      
+      echo "**** Reading .env file ****"
+      echo "Size: $(wc -l < .env) lines"
+      echo "Fist 5 lines:"
+      head -n 5 .env | sed 's/=.*/=***/g'
+      
+      echo "**** Reading llm.json  ****"
+      echo "Size: $(wc -c < llm.json) bytes"
+      echo "First 100 characters:"
+      head -c 20 llm.json && echo ""
+
+      critical_vars=("PROJECT_ID" "DB_ENGINE" "DB_NAME" "DB_USER" "DB_HOST")
+      
+      for var in "${critical_vars[@]}"; do
+        if grep -q "^${var}=" .env; then
+          echo "✅ ${var}: is found"
+        else
+          echo "❌ ERROR: ${var} doesnt not found in .env"
+          exit 1
+        fi
+      done
+    
+      echo "*** Are there empty variables? ***"
+      
+      for var in "${critical_vars[@]}"; do
+        value=$(grep "^${var}=" .env | cut -d'=' -f2-)
+        if [ -z "$value" ]; then
+          echo "❌ ERROR: ${var} is empty"
+          exit 1
+        fi
+      done
+      
+      echo "✅ .env file was uploaded successfully"
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['auth', 'configure-docker', '${_CONT_REGISTRY_NAME}']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build', 
+    '-t',
+    '${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest',
+    '--cache-from',
+    '${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest',
+    '.'
+  ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', '${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest']
+
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'run', 
+    'deploy', 
+    '${_CONT_IMAGE_NAME}',
+    '--image', '${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest',
+    '--service-account', '${_SERVICE_ACCOUNT}',
+    '--project', '${_PROJECT_ID}',
+    '--region', '${_REGION}',
+    '--vpc-connector', '${_VPC_CONNECTOR}'
+  ]
+
+images: ['${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest']
+options:
+  logging: CLOUD_LOGGING_ONLY
