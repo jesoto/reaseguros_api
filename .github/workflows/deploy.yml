@@ -63,9 +63,8 @@ jobs:
     
     - name: Access Secret from Secret Manager to get env variables
       run: |
-        # Obtener el secreto de Secret Manager
-        SECRET_VALUE=$(gcloud secrets versions access \
-          ${{ vars.GCP_SECRET }})
+        SECRET_VALUE=$(gcloud secrets versions access latest \
+          --secret="${{ vars.GCP_SECRET }}")
         
         # Crear archivo .env
         echo "$SECRET_VALUE" > env_var.json
