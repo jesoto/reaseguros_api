@@ -34,7 +34,7 @@ class ReasegurosWorkflow:
         # Ensure GOOGLE_API_KEY is in env
         # Initialize Vertex AI
         self.llm = ChatVertexAI(
-            model="gemini-1.5-flash", 
+            model="gemini-2.5-flash", 
             temperature=0,
             project=os.environ.get("PROJECT_ID", "gen-lang-client-0907180548"),
             location=os.environ.get("REGION", "us-east4")
