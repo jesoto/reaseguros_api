@@ -81,7 +81,8 @@ steps:
     '--project', '${_PROJECT_ID}',
     '--region', '${_REGION}',
     '--vpc-connector', '${_VPC_CONNECTOR}',
-    '--allow-unauthenticated'
+    '--allow-unauthenticated',
+    '--timeout', '600'
   ]
 
 images: ['${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest']
