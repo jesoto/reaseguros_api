@@ -83,7 +83,7 @@ steps:
     '--vpc-connector', '${_VPC_CONNECTOR}',
     '--allow-unauthenticated',
     '--timeout', '600',
-    '--set-env-vars', 'REGION=${_REGION}'
+    '--set-env-vars', 'REGION=${_REGION},PROJECT_ID=${_PROJECT_ID}'
   ]
 
 images: ['${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest']
