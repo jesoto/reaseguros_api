@@ -18,19 +18,31 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
+# Robust .env loading: try BASE_DIR and parent directory (for Docker compatibility)
+env_file_path = os.path.join(BASE_DIR, ".env")
+if not os.path.exists(env_file_path):
+    env_file_path = os.path.join(BASE_DIR.parent, ".env")
 
-PROJECT_ID = env('PROJECT_ID')
-API_CORE_URL = env('API_CORE_URL')
-LOGGING_TYPE = env('LOGGING_TYPE')
+if os.path.exists(env_file_path):
+    environ.Env.read_env(env_file_path)
+
+PROJECT_ID = env('PROJECT_ID', default=None)
+API_CORE_URL = env('API_CORE_URL', default=None)
+LOGGING_TYPE = env('LOGGING_TYPE', default='LOCAL')
 
 # Handle Google Credentials
 GOOGLE_APPLICATION_CREDENTIALS = env('GOOGLE_APPLICATION_CREDENTIALS', default=None)
 if GOOGLE_APPLICATION_CREDENTIALS:
+    # Try finding the file in BASE_DIR or BASE_DIR.parent if path is relative
     if not os.path.isabs(GOOGLE_APPLICATION_CREDENTIALS):
-        GOOGLE_APPLICATION_CREDENTIALS = os.path.join(BASE_DIR, GOOGLE_APPLICATION_CREDENTIALS)
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
+        potential_path = os.path.join(BASE_DIR, GOOGLE_APPLICATION_CREDENTIALS)
+        if not os.path.exists(potential_path):
+            potential_path = os.path.join(BASE_DIR.parent, GOOGLE_APPLICATION_CREDENTIALS)
+        GOOGLE_APPLICATION_CREDENTIALS = potential_path
+    
+    if os.path.exists(GOOGLE_APPLICATION_CREDENTIALS):
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
