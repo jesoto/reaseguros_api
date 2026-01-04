@@ -22,8 +22,10 @@ RUN apt-get update && apt-get install -y \
 
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir gunicorn
+    && pip install --no-cache-dir -r requirements.txt
+
+# Run from the folder where manage.py is
+WORKDIR /api/api_genai_reaseguros
 
 EXPOSE 8080
 
