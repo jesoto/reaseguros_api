@@ -37,18 +37,25 @@ for key in ['GOOGLE_API_KEY', 'LANGSMITH_API_KEY', 'LANGCHAIN_TRACING_V2', 'LANG
         os.environ[key] = env(key)
 
 # Handle Google Credentials
-GOOGLE_APPLICATION_CREDENTIALS = env('GOOGLE_APPLICATION_CREDENTIALS', default=None)
-if GOOGLE_APPLICATION_CREDENTIALS:
+# We use a temp variable to avoid confusion with the env var itself
+google_creds_env = env('GOOGLE_APPLICATION_CREDENTIALS', default=None)
+if google_creds_env:
     # Try finding the file in BASE_DIR or BASE_DIR.parent if path is relative
-    if not os.path.isabs(GOOGLE_APPLICATION_CREDENTIALS):
-        potential_path = os.path.join(BASE_DIR, GOOGLE_APPLICATION_CREDENTIALS)
+    if not os.path.isabs(google_creds_env):
+        potential_path = os.path.join(BASE_DIR, google_creds_env)
         if not os.path.exists(potential_path):
-            potential_path = os.path.join(BASE_DIR.parent, GOOGLE_APPLICATION_CREDENTIALS)
-        GOOGLE_APPLICATION_CREDENTIALS = potential_path
+            potential_path = os.path.join(BASE_DIR.parent, google_creds_env)
+        google_creds_env = potential_path
     
-    if os.path.exists(GOOGLE_APPLICATION_CREDENTIALS):
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
-        print(f"✅ Loaded Google Credentials from: {GOOGLE_APPLICATION_CREDENTIALS}")
+    if os.path.exists(google_creds_env):
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = google_creds_env
+        print(f"✅ Loaded Google Credentials from: {google_creds_env}")
+    else:
+        # If the file is NOT found, we MUST unset the variable
+        # so Google SDK falls back to Default Application Credentials (ADC)
+        if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+            del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+        print(f"⚠️ Google Credentials file not found: {google_creds_env}. Falling back to ADC.")
 
 if os.environ.get('GOOGLE_API_KEY'):
     print("✅ GOOGLE_API_KEY found and loaded into environment.")
