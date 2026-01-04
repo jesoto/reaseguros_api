@@ -103,7 +103,16 @@ class WorkflowView(APIView):
                     }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                     
         except Exception as e:
-            logger.log_text(f"[API] Critical Error: {str(e)}", severity="ERROR")
             import traceback
-            traceback.print_exc()
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_trace = traceback.format_exc()
+            logger.log_text(f"[API] Critical Error: {str(e)}\n{error_trace}", severity="ERROR")
+            
+            return Response({
+                "error": str(e),
+                "details": error_trace,
+                "trace_id": trace_id,
+                "env_check": {
+                    "google_api_key": "PRESENT" if os.environ.get('GOOGLE_API_KEY') else "MISSING",
+                    "google_creds": "PRESENT" if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') else "MISSING"
+                }
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
