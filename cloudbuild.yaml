@@ -80,7 +80,8 @@ steps:
     '--service-account', '${_SERVICE_ACCOUNT}',
     '--project', '${_PROJECT_ID}',
     '--region', '${_REGION}',
-    '--vpc-connector', '${_VPC_CONNECTOR}'
+    '--vpc-connector', '${_VPC_CONNECTOR}',
+    '--allow-unauthenticated'
   ]
 
 images: ['${_CONT_REGISTRY_NAME}/${_PROJECT_ID}/${_CONT_REPOSITORY_NAME}/${_CONT_IMAGE_NAME}:latest']
