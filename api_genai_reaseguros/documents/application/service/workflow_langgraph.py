@@ -33,7 +33,7 @@ class ReasegurosWorkflow:
         # Initialize Gemini
         # Ensure GOOGLE_API_KEY is in env
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash-latest", 
+            model="gemini-1.5-flash", 
             temperature=0
         )
         self.pdf_service = HtmlToPdfService()
