@@ -33,7 +33,7 @@ class ReasegurosWorkflow:
         # Initialize Gemini
         # Ensure GOOGLE_API_KEY is in env
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash", 
+            model="gemini-1.5-flash-latest", 
             temperature=0
         )
         self.pdf_service = HtmlToPdfService()
@@ -53,15 +53,25 @@ class ReasegurosWorkflow:
 
     def _read_prompt(self, filename: str) -> str:
         """Read prompt file."""
-        # Assuming prompts are in d:\github\reaseguros_api\prompts
-        # Adjust path if running from root or elsewhere
-        # We'll try to find the absolute path relative to the project root
-        project_root = Path(__file__).resolve().parent.parent.parent.parent.parent
-        prompt_path = project_root / "prompts" / filename
+        # The 'prompts' directory is at the project root
+        # In Docker, we are in /api
+        # In local, we are in the root of the repo
+        
+        # Try finding prompts in the current working directory or one level up
+        current_path = Path.cwd()
+        prompt_path = current_path / "prompts" / filename
         
         if not prompt_path.exists():
-             # Fallback: try hardcoded path from context
-            prompt_path = Path("d:/github/reaseguros_api/prompts") / filename
+            # If not in cwd, try parent (in case we are inside api_genai_reaseguros/)
+            prompt_path = current_path.parent / "prompts" / filename
+            
+        if not prompt_path.exists():
+            # Last resort: check relative to this file
+            prompt_path = Path(__file__).resolve().parent.parent.parent.parent.parent / "prompts" / filename
+
+        if not prompt_path.exists():
+            logger.error(f"Prompt file not found: {prompt_path}")
+            raise FileNotFoundError(f"Missing prompt file: {filename} at {prompt_path}")
             
         return prompt_path.read_text(encoding="utf-8")
 
