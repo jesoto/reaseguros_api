@@ -119,6 +119,8 @@ class ReasegurosWorkflow:
             response = self.llm.invoke(input_text)
             content = response.content
             
+            logger.info(f"LLM Response received. Length: {len(content)}")
+            
             # Parse JSON
             # Remove markdown code blocks if present
             if "```json" in content:
@@ -128,6 +130,7 @@ class ReasegurosWorkflow:
                 
             try:
                 data = json.loads(content)
+                logger.info("JSON parsing successful.")
             except json.JSONDecodeError:
                 logger.warning("Failed to parse JSON, returning raw content wrapped")
                 data = {"raw_output": content}
@@ -135,11 +138,6 @@ class ReasegurosWorkflow:
             return {"comparison_data": data}
         except Exception as e:
             logger.error(f"Error in Destructurer Node: {e}")
-            print(f"CRITICAL ERROR in Destructurer Node: {e}")
-            with open("error.log", "w") as f:
-                f.write(f"Error: {e}\n\n")
-                import traceback
-                traceback.print_exc(file=f)
             return {"comparison_data": {"error": str(e)}}
 
     def node_report_generator(self, state: AgentState) -> Dict:
@@ -162,6 +160,8 @@ class ReasegurosWorkflow:
             response = self.llm.invoke(input_text)
             content = response.content
             
+            logger.info(f"Report LLM Response received. Length: {len(content)}")
+            
             # Extract HTML
             html_content = content
             if "```html" in content:
@@ -173,6 +173,7 @@ class ReasegurosWorkflow:
                          html_content = p
                          break
             
+            logger.info(f"Final HTML content length: {len(html_content)}")
             return {"html_content": html_content.strip()}
         except Exception as e:
             logger.error(f"Error in Report Node: {e}")

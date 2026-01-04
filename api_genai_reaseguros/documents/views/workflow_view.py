@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 
 from documents.application.service.workflow_langgraph import ReasegurosWorkflow
 from documents.domain.logger import get_logger
@@ -82,14 +82,11 @@ class WorkflowView(APIView):
                 )
                 
                 # Check Result
-                if result.get("pdf_bytes") and output_pdf_path.exists():
-                    logger.log_text("[API] Workflow Success. Returning PDF.")
+                if result.get("pdf_bytes"):
+                    logger.log_text("[API] Workflow Success. Returning PDF bytes.")
                     
-                    # Open file in binary mode for streaming
-                    # Note: FileResponse will close the file automatically
-                    f = open(output_pdf_path, 'rb') 
-                    response = FileResponse(f, content_type='application/pdf')
-                    response['Content-Disposition'] = f'attachment; filename="report_reaseguros.pdf"'
+                    response = HttpResponse(result["pdf_bytes"], content_type='application/pdf')
+                    response['Content-Disposition'] = f'attachment; filename="report_reaseguros_{trace_id}.pdf"'
                     return response
                 else:
                     error_msg = "PDF was not generated."
