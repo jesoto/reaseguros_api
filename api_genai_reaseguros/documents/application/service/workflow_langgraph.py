@@ -5,7 +5,7 @@ from typing import TypedDict, List, Dict, Any, Optional
 from pathlib import Path
 
 from langgraph.graph import StateGraph, END
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.output_parsers import JsonOutputParser
 from pypdf import PdfReader
@@ -32,9 +32,12 @@ class ReasegurosWorkflow:
     def __init__(self):
         # Initialize Gemini
         # Ensure GOOGLE_API_KEY is in env
-        self.llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-flash", 
-            temperature=0
+        # Initialize Vertex AI
+        self.llm = ChatVertexAI(
+            model_name="gemini-1.5-flash", 
+            temperature=0,
+            project=os.environ.get("PROJECT_ID"),
+            location=os.environ.get("REGION", "us-east4")
         )
         self.pdf_service = HtmlToPdfService()
         self._build_graph()

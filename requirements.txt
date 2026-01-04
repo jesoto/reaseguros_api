@@ -14,6 +14,7 @@ langgraph
 langsmith
 langchain
 langchain-google-genai
+langchain-google-vertexai
 pypdf
 xhtml2pdf
 requests
