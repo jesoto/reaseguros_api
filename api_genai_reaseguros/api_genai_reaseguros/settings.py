@@ -31,6 +31,11 @@ PROJECT_ID = env('PROJECT_ID', default=None)
 API_CORE_URL = env('API_CORE_URL', default=None)
 LOGGING_TYPE = env('LOGGING_TYPE', default='LOCAL')
 
+# Propagate keys to os.environ for LangChain/LangGraph
+for key in ['GOOGLE_API_KEY', 'LANGSMITH_API_KEY', 'LANGCHAIN_TRACING_V2', 'LANGCHAIN_ENDPOINT', 'LANGCHAIN_PROJECT']:
+    if key in env:
+        os.environ[key] = env(key)
+
 # Handle Google Credentials
 GOOGLE_APPLICATION_CREDENTIALS = env('GOOGLE_APPLICATION_CREDENTIALS', default=None)
 if GOOGLE_APPLICATION_CREDENTIALS:
@@ -43,6 +48,12 @@ if GOOGLE_APPLICATION_CREDENTIALS:
     
     if os.path.exists(GOOGLE_APPLICATION_CREDENTIALS):
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
+        print(f"✅ Loaded Google Credentials from: {GOOGLE_APPLICATION_CREDENTIALS}")
+
+if os.environ.get('GOOGLE_API_KEY'):
+    print("✅ GOOGLE_API_KEY found and loaded into environment.")
+else:
+    print("⚠️ GOOGLE_API_KEY not found in environment.")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
